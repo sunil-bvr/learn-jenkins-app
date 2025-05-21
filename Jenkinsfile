@@ -22,8 +22,7 @@ pipeline {
                     // https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/register-task-definition.html#examples
                     sh '''
                         aws --version                    
-                        aws s3 ls
-                        # aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json
+                        aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json
                     '''
                 }
             }                     
