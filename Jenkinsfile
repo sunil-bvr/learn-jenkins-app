@@ -3,9 +3,12 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
+        AWS_ECS_CLUSTER = 'LearnjenkinsApp-Cluster-Prod'
+        AWS_ECS_SERVICE = 'LearnJenkinsApp-Service-Prod'
+        AWS_ECS_TD_PROD = 'LearnJenkinsApp-TaskDefinition-Prod'
     }
 
-    stages {               
+    stages {
 
         stage('Deploy to AWS') {
             agent {
@@ -22,21 +25,21 @@ pipeline {
                     // https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ecs/register-task-definition.html#examples
                     sh '''
                         aws --version
-                        yum install jq -y                    
+                        yum install jq -y
                         LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json | jq '.taskDefinition.revision')
                         echo $LATEST_TD_REVISION
-                        aws ecs update-service --cluster LearnjenkinsApp-Cluster-Prod --service LearnJenkinsApp-Service-Prod --task-definition LearnJenkinsApp-TaskDefinition-Prod:$LATEST_TD_REVISION                        
-                        aws ecs wait services-stable --cluster LearnjenkinsApp-Cluster-Prod --services LearnJenkinsApp-Service-Prod
+                        aws ecs update-service --cluster $AWS_ECS_CLUSTER --service $AWS_ECS_SERVICE --task-definition $AWS_ECS_TD_PROD:$LATEST_TD_REVISION
+                        aws ecs wait services-stable --cluster $AWS_ECS_CLUSTER --services $AWS_ECS_SERVICE
                     '''
                 }
-            }                     
+            }
         }
 
         stage('Build') {
             agent {
                 docker {
                     image 'node:18-alpine'
-                    reuseNode true                 
+                    reuseNode true
                 }    
             }
             steps {
