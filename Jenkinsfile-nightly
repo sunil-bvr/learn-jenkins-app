@@ -3,6 +3,11 @@ pipeline {
 
     stages {
 
+        stage('Debug') {
+            steps {
+                sh 'ls -la'  // List files to verify 'build/' exists
+            }
+        }
         stage('Build Docker images') {
             steps {
                 sh '''
