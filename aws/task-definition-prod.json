@@ -23,5 +23,5 @@
     "networkMode": "awsvpc",
     "memory": "512",
     "cpu": "256",
-    "executionRoleArn": "arn:aws:iam::864981748566:role/fargate-ECS-example-TaskExecutionRole-kyf9JeXVoc1m"
+    "executionRoleArn": "arn:aws:iam::864981748566:role/LearnJenkinsApp-ecs-task-execution-role-Dev"
 }
